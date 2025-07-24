@@ -3,7 +3,7 @@ package org.example.rotation;
 import org.example.dmensionalityClasses.AngularVelocity;
 import org.example.dmensionalityClasses.CornerCourse;
 
-public class Rotation {
+public class Rotation implements IRotationObject {
 
     IRotationObject ro;
 
@@ -18,5 +18,20 @@ public class Rotation {
         int velocity = av.getAVelocity();
         co.setCourse(course + velocity);
         ro.setCourse(co);
+    }
+
+    @Override
+    public CornerCourse getCourse() throws Exception {
+        return ro.getCourse();
+    }
+
+    @Override
+    public AngularVelocity getAVelocity() throws Exception {
+        return ro.getAVelocity();
+    }
+
+    @Override
+    public void setCourse(CornerCourse newValue) {
+        ro.setCourse(newValue);
     }
 }
