@@ -2,9 +2,9 @@ name: Тестирование Java-проекта с Maven и JDK 20
 
 on:
   push:
-    branches: ['main']
+    branches: ['debugging']
   pull_request:
-    branches: ['main']
+    branches: ['debugging']
 
 jobs:
   build-app:
