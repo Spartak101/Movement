@@ -1,11 +1,10 @@
 package org.example.tasks;
 
+import org.example.commands.Command;
+
 public interface Taskable {
-    Object object = null;
 
     void Execute() throws Exception;
 
-    default Object getObject() {
-        return object;
-    }
+     Command getCommand();
 }

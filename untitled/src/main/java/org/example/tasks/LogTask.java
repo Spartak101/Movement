@@ -22,7 +22,7 @@ public class LogTask implements Taskable{
     }
 
     @Override
-    public Object getObject() {
+    public Command getCommand() {
         return command;
     }
 

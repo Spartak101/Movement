@@ -25,7 +25,7 @@ public class TwoExceptionsTask implements Taskable{
     }
 
     @Override
-    public Object getObject() {
-        return Taskable.super.getObject();
+    public Command getCommand() {
+        return command;
     }
 }
