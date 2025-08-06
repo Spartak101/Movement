@@ -24,13 +24,13 @@ public class ExceptionHandler implements IExceptionHandler{
     @Override
     public void hand() {
         if (e instanceof CommandException) {
-            new CommandExceptionHandler(queue, command, e, logger);
+            new CommandExceptionHandler(queue, command, e, logger).hand();
         } else if (e instanceof ObjectException) {
-            new ObjectExceptionHandler(queue, command, e, logger);
+            new ObjectExceptionHandler(queue, command, e, logger).hand();
         } else if (e instanceof PackageException) {
-            new PackageExceptionHandler(queue, command, e, logger);
+            new PackageExceptionHandler(queue, command, e, logger).hand();
         } else {
-            new OtherExceptionHandler(queue, command, e, logger);
+            new OtherExceptionHandler(queue, command, e, logger).hand();
         }
     }
 }

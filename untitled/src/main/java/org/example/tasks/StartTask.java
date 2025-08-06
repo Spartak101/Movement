@@ -16,7 +16,7 @@ public class StartTask implements Taskable{
     }
 
     @Override
-    public Object getObject() {
+    public Command getCommand() {
         return command;
     }
 
