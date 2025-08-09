@@ -1,8 +1,6 @@
 package org.example.dmensionalityClasses;
 
-import org.example.object.Object;
-
-public class CornerCourse extends Object {
+public class CornerCourse implements Argumenteble{
     private int Course;
 
     public CornerCourse(int Course) {

@@ -1,8 +1,6 @@
 package org.example.dmensionalityClasses;
 
-import org.example.object.Object;
-
-public class AngularVelocity extends Object {
+public class AngularVelocity implements Argumenteble {
 
     private int AVelocity;
 

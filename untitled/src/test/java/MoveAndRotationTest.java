@@ -1,11 +1,9 @@
-import org.example.dmensionalityClasses.AngularVelocity;
-import org.example.dmensionalityClasses.CornerCourse;
-import org.example.dmensionalityClasses.Point;
-import org.example.dmensionalityClasses.Velocity;
-import org.example.move.Move;
+import org.example.dmensionalityClasses.*;
+import org.example.commands.Move;
+import org.example.exceptions.ObjectException;
 import org.example.move.MovingObjectAdapter;
 import org.example.object.Object;
-import org.example.rotation.Rotation;
+import org.example.commands.Rotation;
 import org.example.rotation.RotationObjectAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +23,8 @@ public class MoveAndRotationTest {
 
     @Test
     @DisplayName("Тест на движение")
-    public void theMovementIsUniform() throws Exception {
-        HashMap<String, Object> iniMap = new HashMap<>();
+    public void theMovementIsUniformTest() throws Exception {
+        HashMap<String, Argumenteble> iniMap = new HashMap<>();
         iniMap.put("location", point);
         iniMap.put("velocity", velocity);
         Object object = new Object(iniMap);
@@ -48,8 +46,8 @@ public class MoveAndRotationTest {
 
     @Test
     @DisplayName("Тест на вращение")
-    public void theRotationIsUniform() throws Exception {
-        HashMap<String, Object> iniMap = new HashMap<>();
+    public void theRotationIsUniformTest() throws Exception {
+        HashMap<String, Argumenteble> iniMap = new HashMap<>();
         iniMap.put("Course", course);
         iniMap.put("AVelocity", angularVelocity);
         Object object = new Object(iniMap);
@@ -66,8 +64,8 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на прочтение текущих координат")
     public void theCoordinatesAreCorrectTest() {
-        Object object = new Object(new HashMap<String, Object>());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Object object = new Object(new HashMap<String, Argumenteble>());
+        Assertions.assertThrows(ObjectException.class, () -> {
             object.get("location");
         });
     }
@@ -75,8 +73,8 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на прочтение текущей скорости")
     public void theSpeedIsCorrectTest() {
-        Object object = new Object(new HashMap<String, Object>());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Object object = new Object(new HashMap<String, Argumenteble>());
+        Assertions.assertThrows(ObjectException.class, () -> {
             object.get("velocity");
         });
     }
@@ -84,10 +82,10 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на сдвинуть объект, у которого невозможно изменить положение в пространстве")
     public void atTemptToMoveTest() {
-        Object object = new Object(new HashMap<String, Object>());
+        Object object = new Object(new HashMap<String, Argumenteble>());
         MovingObjectAdapter movingObjectAdapter = new MovingObjectAdapter(object);
         Move move = new Move(movingObjectAdapter);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(ObjectException.class, () -> {
             move.Execute();
         });
     }
@@ -95,8 +93,8 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на прочтение текущего курса")
     public void theCourseIsCorrectTest() {
-        Object object = new Object(new HashMap<String, Object>());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Object object = new Object(new HashMap<String, Argumenteble>());
+        Assertions.assertThrows(ObjectException.class, () -> {
             object.get("Course");
         });
     }
@@ -104,8 +102,8 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на прочтение текущей угловой скорости")
     public void theAngularVelocityIsCorrectTest() {
-        Object object = new Object(new HashMap<String, Object>());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Object object = new Object(new HashMap<String, Argumenteble>());
+        Assertions.assertThrows(ObjectException.class, () -> {
             object.get("AVelocity");
         });
     }
@@ -113,10 +111,10 @@ public class MoveAndRotationTest {
     @Test
     @DisplayName("Тест на вращать объект, у которого невозможно изменить курс")
     public void atTemptToRotateTest() {
-        Object object = new Object(new HashMap<String, Object>());
+        Object object = new Object(new HashMap<String, Argumenteble>());
         RotationObjectAdapter rotationObjectAdapter = new RotationObjectAdapter(object);
         Rotation rotation = new Rotation(rotationObjectAdapter);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(ObjectException.class, () -> {
             rotation.Execute();
         });
     }

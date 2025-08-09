@@ -1,8 +1,6 @@
 package org.example.dmensionalityClasses;
 
-import org.example.object.Object;
-
-public class Velocity extends Object {
+public class Velocity implements Argumenteble{
     private int VelocityComponentOne;
     private int VelocityComponentTwo;
 
