@@ -4,7 +4,7 @@ import org.example.dmensionalityClasses.AngularVelocity;
 import org.example.dmensionalityClasses.CornerCourse;
 import org.example.rotation.IRotationObject;
 
-public class Rotation implements IRotationObject {
+public class Rotation implements IRotationObject, Executable {
 
     IRotationObject ro;
 

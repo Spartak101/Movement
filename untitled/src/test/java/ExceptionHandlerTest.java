@@ -3,6 +3,7 @@ package org.example.tasks;
 import org.example.TaskQueue;
 import org.example.commands.Command;
 import org.example.commands.Move;
+import org.example.dmensionalityClasses.Argumenteble;
 import org.example.exceptionHandler.CommandExceptionHandler;
 import org.example.exceptionHandler.ExceptionHandler;
 import org.example.exceptionHandler.OtherExceptionHandler;
@@ -28,7 +29,7 @@ public class ExceptionHandlerTest {
     private Handler customHandler;
     private Logger customLogger;
     private TaskQueue queue = new TaskQueue();
-    private Object object = new Object(new HashMap<String, Object>());
+    private Object object = new Object(new HashMap<String, Argumenteble>());
     private MovingObjectAdapter movingObjectAdapter = new MovingObjectAdapter(object);
     private Move move = new Move(movingObjectAdapter);
     private Command command = new Command(move);

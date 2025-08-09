@@ -1,6 +1,5 @@
 package org.example.commands;
 
-import org.example.PackageChecker;
 import org.example.exceptions.CommandException;
 
 public class Command implements Executable {
@@ -10,12 +9,8 @@ public class Command implements Executable {
 
     public Command(Object object) {
         numberOfCalls = 0;
-        try {
-            if (new PackageChecker("org.example.commands", object).checked()) ;
-            this.object = (Executable) object;
-        } catch (Exception e) {
-            throw new CommandException("Ошибка инициализации", e);
-        }
+        this.object = (Executable) object;
+
     }
 
     @Override

@@ -2,9 +2,9 @@ name: Тестирование Java-проекта с Maven и JDK 20
 
 on:
   push:
-    branches: ['Exception-Handler']
+    branches: ['MultiCommand']
   pull_request:
-    branches: ['Exception-Handler']
+    branches: ['MultiCommand']
 
 jobs:
   build-app:
