@@ -1,9 +1,10 @@
-package org.example.move;
+package org.example.commands;
 
 import org.example.dmensionalityClasses.Point;
 import org.example.dmensionalityClasses.Velocity;
+import org.example.move.IMoveingObject;
 
-public class Move implements IMoveingObject {
+public class Move implements IMoveingObject, Executable {
     IMoveingObject mo;
 
     public Move(IMoveingObject mo) {

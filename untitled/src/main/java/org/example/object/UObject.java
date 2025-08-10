@@ -1,5 +1,6 @@
 package org.example.object;
-import java.util.Map;
+
+import org.example.dmensionalityClasses.Argumenteble;
 
 public interface UObject<K, V> {
     /**
@@ -17,5 +18,5 @@ public interface UObject<K, V> {
      * @param value значение
      */
 
-    void set(String key, java.lang.Object value);
+    void set(String key, Argumenteble value);
 }

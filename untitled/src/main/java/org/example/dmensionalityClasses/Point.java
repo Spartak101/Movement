@@ -1,8 +1,7 @@
 package org.example.dmensionalityClasses;
 
-import org.example.object.Object;
 
-public class Point extends Object {
+public class Point implements Argumenteble {
     private int CoordinateOne;
     private int CoordinateTwo;
 
