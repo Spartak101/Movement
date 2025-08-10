@@ -2,9 +2,9 @@ name: Тестирование Java-проекта с Maven и JDK 20
 
 on:
   push:
-    branches: ['MultiCommand']
+    branches: ['IoC-container']
   pull_request:
-    branches: ['MultiCommand']
+    branches: ['IoC-container']
 
 jobs:
   build-app:
