@@ -1,6 +1,7 @@
 package org.example.commands;
 
 import org.example.dmensionalityClasses.Fuel;
+import org.example.exceptions.FuelException;
 import org.example.exceptions.ObjectException;
 
 public class CheckFuel implements Executable {
@@ -16,14 +17,14 @@ public class CheckFuel implements Executable {
     @Override
     public void Execute() throws Exception {
         if (fuel.getFuel() == 0) {
-            throw new ObjectException("Топлива нет!");
+            throw new FuelException("Топлива нет!");
         } else if (fuel.getFuel() < requiredQuantity) {
-            throw new ObjectException("Топлива меньше необходимого");
+            throw new FuelException("Топлива меньше необходимого");
         }
     }
 
     @Override
-    public Object getObject() {
-        return Executable.super.getObject();
+    public Fuel getObject() {
+        return fuel;
     }
 }

@@ -1,5 +1,8 @@
+import org.example.TaskQueue;
 import org.example.commands.*;
 import org.example.dmensionalityClasses.*;
+import org.example.exceptionHandler.ExceptionHandler;
+import org.example.exceptions.FuelException;
 import org.example.exceptions.ObjectException;
 import org.example.move.MovingObjectAdapter;
 import org.example.object.Object;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +27,8 @@ public class FuelAndChangeVelocityTest {
     private Velocity velocity = new Velocity(-7, 3);
     private CornerCourse course = new CornerCourse(0);
     private AngularVelocity angularVelocity = new AngularVelocity(5);
+    private TaskQueue queue = new TaskQueue();
+    private Logger logger;
 
 
     @Test
@@ -41,7 +47,7 @@ public class FuelAndChangeVelocityTest {
     public void CheckFuelExceptionFuelIzLowTest() throws Exception {
         Fuel fuel = new Fuel(50);
         CheckFuel checkFuel = new CheckFuel(fuel, 100);
-        Assertions.assertThrows(ObjectException.class, () -> {
+        Assertions.assertThrows(FuelException.class, () -> {
             checkFuel.Execute();
         });
     }
@@ -51,7 +57,7 @@ public class FuelAndChangeVelocityTest {
     public void CheckFuelExceptionFuelIzZeroTest() throws Exception {
         Fuel fuel = new Fuel(0);
         CheckFuel checkFuel = new CheckFuel(fuel, 1);
-        Assertions.assertThrows(ObjectException.class, () -> {
+        Assertions.assertThrows(FuelException.class, () -> {
             checkFuel.Execute();
         });
     }
@@ -83,11 +89,11 @@ public class FuelAndChangeVelocityTest {
         Command checkFuelCommand = new Command(checkFuel);
         Command movingCommand = new Command(move);
         Command burnFuelCommand = new Command(burnFuel);
-        ArrayList<Taskable> iniMultiCommand = new ArrayList<>();
-        iniMultiCommand.add(new StartTask(checkFuelCommand));
-        iniMultiCommand.add(new StartTask(movingCommand));
-        iniMultiCommand.add(new StartTask(burnFuelCommand));
-        MultiCommand multiCommand = new MultiCommand(iniMultiCommand);
+        ArrayList<Executable> iniMultiCommand = new ArrayList<>();
+        iniMultiCommand.add(checkFuelCommand);
+        iniMultiCommand.add(movingCommand);
+        iniMultiCommand.add(burnFuelCommand);
+        MultiCommand multiCommand = new MultiCommand(iniMultiCommand, queue, logger);
         multiCommand.Execute();
 
         Point po = (Point) object.get("location");
@@ -144,10 +150,10 @@ public class FuelAndChangeVelocityTest {
         Command changeCommand = new Command(changeVelocity);
         Command rotatiunCommand = new Command(rotation);
 
-        ArrayList<Taskable> iniMultiCommand = new ArrayList<>();
-        iniMultiCommand.add(new StartTask(rotatiunCommand));
-        iniMultiCommand.add(new StartTask(changeCommand));
-        MultiCommand multiCommand = new MultiCommand(iniMultiCommand);
+        ArrayList<Executable> iniMultiCommand = new ArrayList<>();
+        iniMultiCommand.add(rotatiunCommand);
+        iniMultiCommand.add(changeCommand);
+        MultiCommand multiCommand = new MultiCommand(iniMultiCommand, queue, logger);
         multiCommand.Execute();
 
 
@@ -166,5 +172,54 @@ public class FuelAndChangeVelocityTest {
                 () -> assertEquals(expectedComponentVelocityTwo, 8, "Вторая компонента скорости не верна"),
                 () -> assertEquals(expectedCornerCourse, 5, "Курс не верен")
         );
+    }
+
+    @Test
+    @DisplayName("Тест мультикоманды вращения, при невозможности движения")
+    public void RotationAndMoveTest() throws Exception {
+        Fuel fuel = new Fuel(0);
+        HashMap<String, Argumenteble> iniMap = new HashMap<>();
+        iniMap.put("fuel", fuel);
+        iniMap.put("Course", course);
+        iniMap.put("AVelocity", angularVelocity);
+        org.example.object.Object object = new Object(iniMap);
+        RotationObjectAdapter rotationObjectAdapter = new RotationObjectAdapter(object);
+        Rotation rotation = new Rotation(rotationObjectAdapter);
+        Command rotatiunCommand = new Command(rotation);
+        Command changeCommand = null;
+        try {
+            Velocity ve = (Velocity) object.get("velocity");
+            ChangeVelocity changeVelocity = new ChangeVelocity(ve, 5, 5);
+            changeCommand = new Command(changeVelocity);
+        } catch (Exception e) {
+            if(changeCommand == null){
+                new ExceptionHandler(queue, null, e,logger);
+            } else {
+                new ExceptionHandler(queue, changeCommand, e,logger);
+            }
+        }
+        Command checkFuelCommand = null;
+        try {
+            CheckFuel checkFuel = new CheckFuel((Fuel) object.get("fuel"), 1);
+            checkFuelCommand = new Command(checkFuel);
+        } catch (Exception e) {
+            new ExceptionHandler(queue, null, e,logger);
+        }
+        ArrayList<Executable> iniMultiCommand = new ArrayList<>();
+        if(checkFuelCommand != null){
+        iniMultiCommand.add(checkFuelCommand);
+        }
+        iniMultiCommand.add(rotatiunCommand);
+        iniMultiCommand.add(changeCommand);
+        MultiCommand multiCommand = new MultiCommand(iniMultiCommand, queue, logger);
+        multiCommand.Execute();
+
+        CornerCourse cc = (CornerCourse) object.get("Course");
+        int cornerCourse = cc.getCourse();
+        int expectedCornerCourse = cornerCourse;
+
+
+        assertEquals(expectedCornerCourse, 5, "Курс не верен");
+
     }
 }

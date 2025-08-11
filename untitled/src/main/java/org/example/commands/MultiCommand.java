@@ -1,32 +1,42 @@
 package org.example.commands;
 
+import org.example.TaskQueue;
+import org.example.exceptionHandler.ExceptionHandler;
 import org.example.exceptions.CommandException;
 import org.example.tasks.Taskable;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class MultiCommand implements Executable {
 
-    private ArrayList<Taskable> arrayTask;
+    private ArrayList<Executable> arrayTask;
+    private TaskQueue queue;
+    private Logger logger;
 
-    public MultiCommand(ArrayList<Taskable> arrayTask) {
+    public MultiCommand(ArrayList<Executable> arrayTask, TaskQueue queue, Logger logger) {
         this.arrayTask = arrayTask;
+        this.queue = queue;
+        this.logger = logger;
     }
 
     @Override
     public void Execute() throws Exception {
 
-        arrayTask.forEach(taskable -> {
-            try {
-                taskable.Execute();
-            } catch (Exception e) {
-                throw new CommandException(e);
+        for (Executable command : arrayTask) {
+            if (command == null) {
+                continue;
             }
-        });
+            try {
+                command.Execute();
+            } catch (Exception e){
+                new ExceptionHandler(queue, (Command) command, e, logger);
+            }
+        }
     }
 
-    @Override
-    public Object getObject() {
-        return arrayTask;
+        @Override
+        public Object getObject () {
+            return arrayTask;
+        }
     }
-}
